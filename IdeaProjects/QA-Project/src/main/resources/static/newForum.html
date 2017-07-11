@@ -1,0 +1,474 @@
+<!DOCTPYE html>
+<html>
+    <head>
+        <title>FrageForum</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    
+    <body>
+        
+        <div id="obereLeiste" v-if="seen">
+            <button id="new-button"
+                    v-on:click="newQuestion">
+                Neue Frage erstellen
+            </button>
+            <button id="log-button" 
+                    v-on:click="doLogging">
+                Login / Logout
+            </button>
+            <button id="reg-button" 
+                    v-on:click="register">
+                Registrieren
+            </button>
+            <h1>Schlechte Frage</h1>
+            <filter-selector></filter-selector>
+            
+        </div>
+        <div id="ThreadBereich" v-if="seen">
+            <frage v-for="n in questions.length"
+                   v-bind:title="questions[n-1]['title']"
+                   v-bind:question="questions[n-1]['text']"
+                   v-bind:autor="questions[n-1]['questioner']['username']"
+                   v-bind:datum="questions[n-1]['date']"
+                   v-bind:id="questions[n-1]['id']"
+                   v-bind:userid="questions[n-1]['questioner']['id']"
+                   v-bind:solved="questions[n-1]['solved']"
+                   v-bind:answers="questions[n-1]['answers']"></frage>
+        </div>
+        <div id="newQuestion" v-if="seen">
+            <neuef></neuef>
+            <br>
+            <button v-on:click="submitQuestion">Frage einreichen</button>
+        </div>
+        <div id="newAnswer" v-if="seen">
+            <neuea></neuea>
+            <br>
+            <button v-on:click="submitAnswer">Antwort einreichen</button>
+        </div>
+        <div id="login" v-if="seen">
+            <login></login>
+            <br>
+            <button v-on:click="submitLogin">Einloggen</button>
+        </div>
+        <div id="registration" v-if="seen">
+            <registrierung></registrierung>
+            <br>
+            <button v-on:click="submitRegistration">Registrieren</button>
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://unpkg.com/vue"></script>
+        <script type="text/x-template" id="question">
+            <div>
+                <p><b>{{title}} ({{id}})</b></p>
+                <p>{{question}}</p>
+                <p><i>{{autor}} ({{userid}})</i>, den <i>{{datum}}</i></p>
+                <input id="answered" type="checkbox" >Beantwortet
+                <details>
+                    <summary>Antworten anzeigen</summary>
+                    <antwort v-for="n in answers.length" 
+                             v-bind:text="answers[n-1]['text']"
+                             v-bind:author="answers[n-1]['answerer']['username']"
+                             v-bind:date="answers[n-1]['date']"
+                             v-bind:id="answers[n-1]['id']"
+                             v-bind:userid="answers[n-1]['answerer']['id']"
+                             v-bind:accepted="answers[n-1]['accepted']"></antwort>
+                </details>
+                <br>
+                <button v-on:click="answerTheQuestion">Frage beantworten</button>
+                <button v-on:click="deleteTheQuestion">Frage Löschen</button>
+                <hr>
+            </div>
+        </script>
+        <script type="text/x-template" id="answer">
+            <div id="answer">
+                <p>({{id}})</p>
+                <p>{{text}}</p>
+                <p><i>{{author}} ({{userid}})</i>, den {{date}}</p>
+                <p v-if="accepted"><i>Dieser Beitrag beantwortet die Frage.</i></p>
+                <button v-on:click="deleteTheAnswer">Antwort Löschen</button>  
+                <hr>
+            </div>
+        </script>
+        
+        <script>
+            /*
+            NOTES:
+            Eine Antwort akzeptieren -> referenz auf beantwortete Frage?
+        */
+            Vue.component("filter-selector", {
+                template: `
+                    <select id="filterSelector" v-on:change="filterSelected">
+                        <option>All Threads</option>
+                        <option>My Threads</option>
+                        <option>My Answers</option>
+                        <option>Unanswered Threads</option>
+                        <option>Unsolved Threads</option>
+                    </select>
+                `,
+                methods: {
+                    filterSelected: function() {
+                        topBar.filterSelect(document.getElementById("filterSelector").selectedIndex)
+                    }
+                }
+            })
+            Vue.component('neuef', {
+                template: `<div>
+                                <p>Titel der Frage:</p>
+                                <input type="text" id="newTitle" placeholder="Titel">
+                                <br>
+                                <p>Frage:</p>
+                                <textarea id="newText" placeholder="Frage"></textarea>
+                          </div>`          
+                          })
+            
+            Vue.component('neuea', {
+                template: `<div>
+                                <p>Antwort:</p>
+                                <textarea id="answerText" placeholder="Antwort"></textarea>
+                          </div>`  
+            })
+            
+            Vue.component('login', {
+                template: `<div>
+                                <p>Benutzername:</p>
+                                <input type="text" id="username" placeholder="Benutzername">
+                                <br>
+                                <p>Passwort:</p>
+                                <input type="text" id="password" placeholder="Passwort">
+                          </div>`   
+            })
+            
+            Vue.component('registrierung', {
+                template: `<div>
+                                <p>Neuer Benutzername:</p>
+                                <input type="text" id="newUsername" placeholder="Benutzername">
+                                <br>
+                                <p>Neues Passwort:</p>
+                                <input type="text" id="newPassword" placeholder="Passwort">
+                          </div>`   
+            })
+            
+            
+            Vue.component('frage', {
+                //TODO TICK BOX IF SOLVED
+                props: ['title', 'question', 'autor', 'datum', 'id', 'userid', 'solved', 'answers'],
+                template: '#question',
+                methods: {
+                    
+                    answerTheQuestion: function() {
+                        if(document.getElementById("answered").checked) {
+                            alert("Frage ist bereits beantwortet!")
+                        }
+                        else {
+                            newAnswer.id = this.id
+                            mainArea.seen = false;
+                            newAnswer.seen = true;
+                        }
+                    },
+                    
+                    deleteTheQuestion: function() {
+                        var out = {"id": this.id}
+                        console.log(JSON.stringify(out))
+                        $.ajax({
+                            url:'http://localhost:8080/qa/deleteQuestion',
+                            type:'DELETE',
+                            contentType:'application/json',
+                            xhrFields: {
+                                withCredentials:true
+                            },
+                            data:JSON.stringify(out),
+                            success: function() {
+                                mainArea.updateStuff()
+                            },
+                            error: function(jqXHR, status, error){
+                                console.log(status + " deleteTheQuestion")
+                            }
+                        });
+                    },
+                    
+                }
+            })
+            
+            Vue.component('antwort', {
+                props: ['text', 'date', 'author', 'id', 'userid', 'accepted'],
+                template: '#answer',
+                methods: {
+                    deleteTheAnswer: function() {
+                        var out = {"id": this.id}
+                        $.ajax({
+                            url:'http://localhost:8080/qa/deleteAnswer',
+                            type:'DELETE',
+                            contentType:'application/json',
+                            xhrFields: {
+                                withCredentials:true
+                            },
+                            data:JSON.stringify(out),
+                            success: function() {
+                                mainArea.updateStuff()
+                            }
+                        });
+                    }
+                }
+            })
+            
+            var topBar = new Vue({
+                el: "#obereLeiste",
+                data: {
+                    seen: true,
+                },
+                methods: {
+                    doLogging: function () {
+                        mainArea.seen = false,
+                        login.seen = true
+                    },
+                    newQuestion: function() {
+                        mainArea.seen = false,
+                        newQuestion.seen = true
+                    },
+                    register: function() {
+                        mainArea.seen = false,
+                        registration.seen = true
+                    },
+                    filterSelect: function(selected) {
+                        switch(selected) {
+                            case 0:
+                                this.makeRequest("http://localhost:8080/qa")
+                                break;
+                            case 1:
+                                this.makeRequest("http://localhost:8080/qa/myQuestions")
+                                break;
+                            case 2:
+                                this.makeRequest("http://localhost:8080/qa/myAnswers")
+                                break;
+                            case 3:
+                                this.makeRequest("http://localhost:8080/qa/unansweredQuestions")
+                                break;
+                            case 4:
+                                this.makeRequest("http://localhost:8080/qa/unresolvedQuestions")
+                                break;
+                                       }
+                    },
+                    makeRequest: function(url) {                    
+                        $.ajax({
+                            url:url,
+                            dataType: 'json',
+                            success: function(data,status){
+                                console.log("successfully loaded questions from " + url)
+                                mainArea.questions = data;
+                            },
+                            error: function(jqXHR, status, errorThrown){
+                                console.log("error: " + errorThrown)
+                            }
+                        })
+                    }
+                }
+            })
+            
+            var newQuestion = new Vue({
+                el: '#newQuestion',
+                data: {
+                    seen: false,
+                },
+                methods: {
+                    submitQuestion: function() {
+                        
+                        var result = {
+                            "title":document.getElementById("newTitle").value, 
+                            "text":document.getElementById("newText").value}
+                        
+                        mainArea.seen = true,
+                        newQuestion.seen = false;
+                        
+                        $.ajax({
+                            url:'http://localhost:8080/qa/setQuestion',
+                            type:'POST',
+                            xhrFields: {
+                                withCredentials:true
+                            },
+                            contentType:'application/json',
+                            data:JSON.stringify(result),
+                            success:function(){
+                                console.log("sent: " + JSON.stringify(result))
+                                mainArea.updateStuff();
+                            },
+                            error:function() {
+                                console.log("konnte nicht senden: " + JSON.stringify(result))
+                            }
+                        });
+                    }
+                }
+            })
+            
+            var newAnswer = new Vue ({
+                el: '#newAnswer',
+                data: {
+                    seen: false,
+                    id: 0
+                },
+                methods: {
+                    submitAnswer: function() {
+                        
+                        var result = {
+                            "text": document.getElementById("answerText").value,
+                            "question": {"id":this.id}
+                                     }
+                        
+                        mainArea.seen = true,
+                        newAnswer.seen = false;
+                        
+                        $.ajax({
+                            url:'http://localhost:8080/qa/setAnswer',
+                            type:'POST',
+                            xhrFields: {
+                                withCredentials:true
+                            },
+                            contentType:'application/json',
+                            data:JSON.stringify(result),
+                            success:function(){
+                                console.log("sent: " + JSON.stringify(result))
+                                
+                                mainArea.updateStuff()
+                            },
+                            error:function() {
+                                console.log("konnte nicht senden: " + JSON.stringify(result))
+                            }
+                        });
+                    }
+                }
+            })
+            
+            var login = new Vue({
+                el: '#login',
+                data: {
+                    seen: false,
+                },
+                methods: {
+                    submitLogin: function() {
+                        
+                        var user = document.getElementById("username").value
+                        var pass = document.getElementById("password").value
+                        console.log(user + " " + pass)
+                        
+                        mainArea.seen = true,
+                        login.seen = false,
+                            
+                        $.ajax({
+                            url:'http://localhost:8080/qa',
+                            type:'HEAD',
+                            xhrFields: {
+                                withCredentials:true
+                            },
+                            headers:{
+                                "Authorization":"Basic " + btoa(user + ":" + pass)
+                            },
+                            success: function() {
+                                //DO LOG IN TODO
+                                console.log("passt!")
+                            },
+                            error: function(jqXHR, status, error) {
+                                console.log("passt nicht!")
+                            }
+                        })    
+                    },
+                    logout : function () {
+                        $.ajax({
+                            url: 'http://localhost:8080/logout',
+                            type:'POST',
+                            xhrFields: {
+                                withCredentials:true
+                            },
+                            success: function() {
+                                console.log("passt!")
+                            },
+                            error: function(jqXHR, status, error) {
+                                console.log("passt nicht!")
+                            }
+                        })
+                    }
+                }
+            })
+            
+            var registration = new Vue({
+                el: '#registration',
+                data: {
+                    seen: false,
+                },
+                methods: {
+                    submitRegistration: function() {
+
+                        var user = document.getElementById("newUsername").value
+                        var pass = document.getElementById("newPassword").value
+
+                        var out = {"username": user, "password": pass}
+                        mainArea.seen = true,
+                        registration.seen = false,
+                            $.ajax({
+                                url:'http://localhost:8080/addUser',
+                                type:'POST',
+                                xhrFields: {
+                                    withCredentials:true
+                                },
+                                contentType: 'application/json',
+                                data:JSON.stringify(out),
+
+                                success: function() {
+                                    console.log("passt!")
+                                },
+                                error: function(jqXHR, status, error) {
+                                    console.log("passt nicht!")
+                                }
+                            })
+                    }
+                }
+            })
+            
+            var mainArea = new Vue({
+                el: '#ThreadBereich',
+                data: {
+                    seen: true,
+                    questions:[],
+                },
+                
+                created: function() {
+                    
+                    $.ajax({
+                        url:"http://localhost:8080/qa",
+                        dataType: 'json',
+                        xhrFields: {
+                                withCredentials:true
+                            },
+                        success: function(data,status){
+                            console.log("loaded all: " + JSON.stringify(data))
+                            mainArea.questions = data
+                        },
+                        
+                        error: function(jqXHR, status, errorThrown){
+                            console.log(status + " first GET")
+                        }
+                    })
+                },
+                methods: {
+                    updateStuff: function(data) {
+                        $.ajax({
+                            url:"http://localhost:8080/qa",
+                            dataType: 'json',
+                            xhrFields: {
+                                    withCredentials:true
+                                },
+                            success: function(data,status){
+                                mainArea.questions = data
+                            },
+
+                            error: function(jqXHR, status, errorThrown){
+                                console.log(status + "updateStuff")
+                            }
+                        })
+                    },
+                }
+            })
+        </script>
+        
+    </body>
+</html>

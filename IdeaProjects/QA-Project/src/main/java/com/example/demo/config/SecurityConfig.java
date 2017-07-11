@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
@@ -21,6 +22,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //    3) Autowiring and beans for custom UserDetailsService
+    @Autowired
     private final MyUserDetailsService userDetailsService;
 
     @Autowired
@@ -29,12 +31,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
 
+        /*http.authorizeRequests().antMatchers("*//*").permitAll()
+                .and()
+                .formLogin()
+                .usernameParameter("username")
+                .passwordParameter("password").permitAll()
+                .and().csrf().disable();*/
 
-        http
+        /*http
+                .authorizeRequests()
+                .antMatchers("/qa", "/addUser").permitAll()
+                .and()
+                .formLogin().permitAll()
+                .and().httpBasic()
+                .and()
+                .csrf().disable();
+*/
+
+        /*http
                 .authorizeRequests()
                 .antMatchers("/qa", "/addUser").permitAll()
                 .and()
@@ -42,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated().and().formLogin().permitAll()
                 .and().httpBasic()
                 .and()
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());*/
 
 
         /*http
@@ -56,15 +76,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 //      Dies ist nur zum Testen, falls die Anfragen bei dem CSRF-Token nicht funktionieren
 
-       /* http
+        http
                 .authorizeRequests()
-                .antMatchers("*//*").permitAll()
+                .antMatchers("/*").permitAll()
                 .and()
-                .authorizeRequests()
-                .anyRequest().authenticated().and().formLogin().permitAll()
+                .formLogin().permitAll().loginProcessingUrl("/index.html")
                 .and()
-                .csrf().disable();*/
-
+                .httpBasic()
+                .and()
+                .csrf().disable();
 
 
 

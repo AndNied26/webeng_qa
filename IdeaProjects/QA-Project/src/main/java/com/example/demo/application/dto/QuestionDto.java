@@ -15,7 +15,7 @@ public class QuestionDto {
     private Long id;
     private String title;
     private String text;
-    private Date date;
+    private String date;
     private UserDto questioner;
     private boolean solved;
     private List<AnswerDto> answers;
@@ -24,7 +24,7 @@ public class QuestionDto {
         this.id = id;
         this.title = title;
         this.text = text;
-        this.date = date;
+        this.date = date.toString();
         this.questioner = questioner;
         this.solved = solved;
         this.answers = answers;
@@ -55,12 +55,12 @@ public class QuestionDto {
         this.text = text;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.date = date.toString();
     }
 
     public UserDto getQuestioner() {

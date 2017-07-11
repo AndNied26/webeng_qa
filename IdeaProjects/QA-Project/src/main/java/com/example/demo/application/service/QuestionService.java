@@ -17,8 +17,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class QuestionService {
@@ -135,8 +137,9 @@ public class QuestionService {
     public void setQuestion(Question question) {
 
         User user = getMyUser();
+        if (user != null){
         Question q = new Question(question.getTitle(), question.getText(), user);
-        questionRepository.save(q);
+        questionRepository.save(q);}
     }
 
     public void deleteQuestion(Question question){

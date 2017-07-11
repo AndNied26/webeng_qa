@@ -67,13 +67,13 @@ public class QuestionController {
 
 
 
-    @RequestMapping(value = "deleteQuestion", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/deleteQuestion", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void deleteQuestion(@RequestBody Question question) {
            questionService.deleteQuestion(question);
     }
 
 
-    @RequestMapping(value = "setAnswer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/setAnswer", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void setNewAnswer(@RequestBody Answer answer) {
         questionService.setNewAnswer(answer);
     }

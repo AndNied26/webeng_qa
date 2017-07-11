@@ -1,0 +1,39 @@
+#ObereLeiste {
+    border-style: groove
+}
+
+h1 {
+    margin-left: 20px
+}
+
+
+#log-button {
+    float:right;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+#new-button {
+    float: right;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+#reg-button {
+    float: right;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+#answer {
+    margin-left: 40px
+}
+
+#filterSelector {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+#threadBereich {
+    padding-left: 20px
+}

@@ -27,9 +27,9 @@ public class UserController {
     @RequestMapping(value = "/getMyUser", method = RequestMethod.GET)
     public User getMyUser() {return userService.getMyUser();}
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    /*@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void register(@RequestBody User user) {
         userService.addUser(user);
-    }
+    }*/
 
 }

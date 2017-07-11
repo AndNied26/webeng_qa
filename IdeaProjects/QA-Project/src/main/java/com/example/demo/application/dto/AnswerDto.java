@@ -10,14 +10,14 @@ public class AnswerDto {
 
     private long id;
     private String text;
-    private Date date;
+    private String date;
     private UserDto answerer;
     private boolean accepted;
 
     public AnswerDto(long id, String text, Date date, UserDto answerer, boolean accepted) {
         this.id = id;
         this.text = text;
-        this.date = date;
+        this.date = date.toString();
         this.answerer = answerer;
         this.accepted = accepted;
     }
@@ -41,12 +41,12 @@ public class AnswerDto {
         this.text = text;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.date = date.toString();
     }
 
     public UserDto getAnswerer() {
