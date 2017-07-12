@@ -13,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashSet;
 
+/**
+ * A class which inserts some user-objects and role-objects in the repository by starting the application.
+ */
 @Component
 public class DBInit implements CommandLineRunner {
 
@@ -27,6 +29,14 @@ public class DBInit implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private boolean toggledInit = false;
 
+    /**
+     * A constructor wirering the local repositories to the actual repositories and the local passwordEncoder
+     * to the actual passwordEncoder.
+     *
+     * @param userRepository the userRepositoty.
+     * @param roleRepository the roleRepository.
+     * @param passwordEncoder the passwordEncoder.
+     */
     @Autowired
     public DBInit (QuestionRepository questionRepository, AnswerRepository answerRepository, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.questionRepository = questionRepository;
@@ -36,6 +46,13 @@ public class DBInit implements CommandLineRunner {
         this.passwordEncoder = passwordEncoder;
     }
 
+
+    /**
+     * defining the acctions which should be performed by starting up the application.
+     *
+     * @param strings ?? keine Ahnung ??
+     * @throws Exception if anythings goes wrong.
+     */
     @Override
     public void run (String... strings) throws Exception {
         Role role = new Role();

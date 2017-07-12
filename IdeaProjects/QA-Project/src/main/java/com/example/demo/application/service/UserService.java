@@ -13,21 +13,35 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A class containing the methodes, which performs the action the user wanted to be done.
+ */
 @Service
 public class UserService {
 
     private UserRepository userRepository;
-
     private RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-
+    /**
+     * A constructor, which sets the local repositories to the actual repositories
+     * and the local passwordEncoder to the actual passwordEncoder.
+     *
+     * @param userRepository the userRepository.
+     * @param roleRepository the roleRepository.
+     * @param passwordEncoder the passwordEncoder.
+     */
     public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Adds the given user to the userRepository, if the given user is not already contained.
+     *
+     * @param user the given user.
+     */
     public void addUser(User user) {
         if(userRepository.findByUsername(user.getUsername()) == null) {
 
@@ -51,19 +65,26 @@ public class UserService {
         }
     }
 
+    /**
+     * a getter-method, for all users known by the application.
+     *
+     * @return a list of users.
+     */
     public List<User> getUsers() {
         List<User> allUsers = new LinkedList<>();
         userRepository.findAll().forEach(allUsers :: add);
         return allUsers;
     }
 
-
+    /**
+     * a getter-method, for the currently logged in user.
+     *
+     * @return the currently logged in user.
+     */
     public User getMyUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         User user = userRepository.findByUsername(name);
         return user;
     }
-
-
 }

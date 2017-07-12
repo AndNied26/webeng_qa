@@ -5,15 +5,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * A class for generating the entity role.
+ * The generated object houses all necessary attributtes of an role-object
+ * and provides getter- and setter-methodes for this attributes.
+ */
 @Entity
 public class Role {
 
-    public Role() {
-    }
 
-    public Role(String name) {
-        this.name = name;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +25,26 @@ public class Role {
     @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     private Set<User> users;
 
+    /**
+     * A standard constructor for a Role-object.
+     */
+    public Role() {
+
+    }
+
+    /**
+     * A constructor for a Role-object.
+     *
+     * @param name the name of the role.
+     */
+    public Role(String name) {
+        this.name = name;
+    }
+
+
+    /*
+     * All setter- and getter-methodes needed to manage all attributes.
+     */
     public long getId() {
         return id;
     }

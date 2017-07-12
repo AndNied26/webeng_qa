@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.application.intit.DBInit;
 import com.example.demo.persistence.repository.AnswerRepository;
 import com.example.demo.persistence.repository.QuestionRepository;
 import com.example.demo.persistence.repository.RoleRepository;

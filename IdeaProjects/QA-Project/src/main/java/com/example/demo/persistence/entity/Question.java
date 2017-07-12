@@ -2,13 +2,17 @@ package com.example.demo.persistence.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A class for generating the entity question.
+ * The generated object houses all necessary attributtes of an question-object
+ * and provides getter- and setter-methodes for this attributes.
+ */
 @Entity
 public class Question {
 
@@ -27,12 +31,18 @@ public class Question {
     private List<Answer> answers;
 
     @ManyToOne
-    private User questioner; // User ID
+    private User questioner; //User ID
 
-//    @Column(name = "isSolved")
+    //@Column(name = "isSolved")
     private boolean solved;
 
-
+    /**
+     * A constructor for a Question-object.
+     *
+     * @param title the title of the question.
+     * @param text the text of the question.
+     * @param questioner the questioner of the question.
+     */
     public Question(String title, String text, User questioner) {
         this.title = title;
         this.text = text;
@@ -42,9 +52,16 @@ public class Question {
         this.solved = false;
     }
 
+    /**
+     * A standard-constructor for an Answer-object.
+     */
     public Question() {
+
     }
 
+    /*
+     * All setter- and getter-methodes needed to manage all attributes.
+     */
     public Long getId() {
         return id;
     }

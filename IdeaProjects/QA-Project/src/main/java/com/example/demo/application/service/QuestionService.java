@@ -1,14 +1,10 @@
 package com.example.demo.application.service;
 
-
-
 import com.example.demo.application.dto.AnswerDto;
 import com.example.demo.application.dto.QuestionDto;
-import com.example.demo.application.dto.RoleDto;
 import com.example.demo.application.dto.UserDto;
 import com.example.demo.persistence.entity.Answer;
 import com.example.demo.persistence.entity.Question;
-import com.example.demo.persistence.entity.Role;
 import com.example.demo.persistence.entity.User;
 import com.example.demo.persistence.repository.AnswerRepository;
 import com.example.demo.persistence.repository.QuestionRepository;
@@ -17,11 +13,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
+/**
+ * A class containing the methodes, which performs the action the user wanted to be done.
+ */
 @Service
 public class QuestionService {
 
@@ -29,12 +26,25 @@ public class QuestionService {
     private AnswerRepository answerRepository;
     private UserRepository userRepository;
 
+
+    /**
+     * A constructor, which sets the local repositories to the actual repositories.
+     *
+     * @param questionRepository the questionRepository.
+     * @param answerRepository the answerRepository.
+     * @param userRepository the userRepository.
+     */
     public QuestionService(QuestionRepository questionRepository, AnswerRepository answerRepository, UserRepository userRepository) {
         this.questionRepository = questionRepository;
         this.answerRepository = answerRepository;
         this.userRepository = userRepository;
     }
 
+    /**
+     * A getter-method for all questions known by the application.
+     *
+     * @return a list of questionDto-objects.
+     */
     public List<QuestionDto> getAllQuestions() {
         List<Question> questions = new LinkedList<>();
         questionRepository.findAll().forEach(questions :: add);
@@ -46,6 +56,11 @@ public class QuestionService {
         return allQuestions;
     }
 
+    /**
+     * A getter-method, for all questions asked by the currently logged in user.
+     *
+     * @return a list of questionDto-objects.
+     */
     public List<QuestionDto> getMyQuestions() {
         List<Question> questions = new LinkedList<>();
         questionRepository.findAll().forEach(questions :: add);
@@ -64,6 +79,11 @@ public class QuestionService {
         return myQuestions;
     }
 
+    /**
+     * A getter-method, for all questions, which haven't been answered at all.
+     *
+     * @return a list of questionDto-objects.
+     */
     public List<QuestionDto> getUnansweredQuestions() {
         List<Question> questions = new LinkedList<>();
         questionRepository.findAll().forEach(questions :: add);
@@ -77,6 +97,11 @@ public class QuestionService {
         return unansweredQuestions;
     }
 
+    /**
+     * A getter-method for all questions, which haven't been solved yet, but may already received one or more answers.
+     *
+     * @return a list of questionDto-objects.
+     */
     public List<QuestionDto> getUnresolvedQuestions() {
         List<Question> questions = new LinkedList<>();
         questionRepository.findAll().forEach(questions :: add);
@@ -100,10 +125,14 @@ public class QuestionService {
         return unresolvedQuestions;
     }
 
+    /**
+     * A getter-method for all question, where the currently logged in user wrote an answer to.
+     *
+     * @return a list of questionDto-objects.
+     */
     public List<QuestionDto> getMyAnswersToQuestions() {
 
         User user = getMyUser();
-
 
         List<Answer> answers = answerRepository.findAll();
         List<Answer> filteredAnswers = new LinkedList<>();
@@ -113,11 +142,11 @@ public class QuestionService {
                 filteredAnswers.add(answer);
             }
         }
+
         List<Question> questions = new LinkedList<>();
         for(Answer answer: filteredAnswers) {
             questions.add(answer.getQuestion());
         }
-
 
         //filter the same questions
         List<Question> filteredQuestions = new LinkedList<>();
@@ -129,21 +158,30 @@ public class QuestionService {
 
         List<QuestionDto> myAnswersToQuestions = new LinkedList<>();
         for (Question question: filteredQuestions) {
-                myAnswersToQuestions.add(convertToDto(question));
+            myAnswersToQuestions.add(convertToDto(question));
         }
         return myAnswersToQuestions;
     }
 
+    /**
+     * Adds the given question to the questionRepository.
+     *
+     * @param question the given question.
+     */
     public void setQuestion(Question question) {
 
         User user = getMyUser();
         if (user != null){
-        Question q = new Question(question.getTitle(), question.getText(), user);
-        questionRepository.save(q);}
+            Question q = new Question(question.getTitle(), question.getText(), user);
+            questionRepository.save(q);}
     }
 
+    /**
+     * Deletes the given question out of the questionRepository.
+     *
+     * @param question the given question.
+     */
     public void deleteQuestion(Question question){
-
         User user = getMyUser();
 
         Question q = questionRepository.findOne(question.getId());
@@ -154,8 +192,11 @@ public class QuestionService {
 
     }
 
-
-
+    /**
+     * Inserts the given answer into the answerRepository and connects it to the question, it depends to.
+     *
+     * @param answer the given answer.
+     */
     public void setNewAnswer(Answer answer){
         User user = getMyUser();
         Long l = answer.getQuestion().getId();
@@ -166,11 +207,12 @@ public class QuestionService {
         questionRepository.save(q);
     }
 
-
-
-    //Set the given answer as accepted and the question as solved
+    /**
+     * Sets the accepted-flag of the given answers to 'true'.
+     *
+     * @param answer the given answers.
+     */
     public void acceptAnswer(Answer answer) {
-
         User user = getMyUser();
 
         Answer a = answerRepository.findOne(answer.getId());
@@ -183,27 +225,33 @@ public class QuestionService {
             question.setSolved(true);
             questionRepository.save(question);
         }
-
     }
 
+    /**
+     * Deletes the given answer out of the repository.
+     *
+     * @param answer the given answer,
+     */
     public void deleteAnswer(Answer answer) {
-
         User user = getMyUser();
 
         Answer a = answerRepository.findOne(answer.getId());
 
         Question question = a.getQuestion();
 
-
         if(user == a.getAnswerer()){
             question.getAnswers().remove(a);
             answerRepository.delete(a.getId());
         }
-
     }
 
+    /**
+     * Converts a question-object into a questionDto-object.
+     *
+     * @param q the question,which is going to be converted.
+     * @return the questionDto-object, made out of the first given question-object.
+     */
     private QuestionDto convertToDto(Question q){
-
         List<Answer> answers = q.getAnswers();
         List<AnswerDto> answerDtos= new LinkedList<>();
 
@@ -217,14 +265,31 @@ public class QuestionService {
         return dto;
     }
 
+    /**
+     * Converts a answer-object into a answerDto-object.
+     *
+     * @param a the answer,which is going to be converted.
+     * @return the answerDto-object, made out of the first given answer-object.
+     */
     private AnswerDto convertToDto(Answer a) {
         return new AnswerDto(a.getId(), a.getText(), a.getDate(), convertToDto(a.getAnswerer()), a.isAccepted());
     }
 
+    /**
+     * Converts a user-object into a userDto-object.
+     *
+     * @param u the user,which is going to be converted.
+     * @return the userDto-object, made out of the first given user-object.
+     */
     private UserDto convertToDto(User u){
         return new UserDto(u.getId(), u.getUsername());
     }
 
+    /**
+     * a getter-method, for the currently logged in user.
+     *
+     * @return the currently logged in user.
+     */
     public User getMyUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();

@@ -353,12 +353,15 @@
                         
                         mainArea.seen = true,
                         login.seen = false,
-                            
+
+                        this.beforeSend(new XMLHttpRequest());
                         $.ajax({
+
                             url:'http://localhost:8080/qa',
                             type:'HEAD',
                             xhrFields: {
-                                withCredentials:true
+                                withCredentials:true,
+                                RequestHeader:'X-Requested-With XMLHttpRequest',
                             },
                             headers:{
                                 "Authorization":"Basic " + btoa(user + ":" + pass)

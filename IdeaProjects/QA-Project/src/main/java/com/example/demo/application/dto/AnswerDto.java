@@ -1,12 +1,13 @@
 package com.example.demo.application.dto;
 
-import com.example.demo.persistence.entity.Question;
-import com.example.demo.persistence.entity.User;
-
 import java.util.Date;
 
+/**
+ * A class for generating a DTO-object for the entity 'answer'.
+ * The generated object houses all necessary attributtes of an answer-object
+ * and provides getter- and setter-methodes for this attributes.
+ */
 public class AnswerDto {
-
 
     private long id;
     private String text;
@@ -14,6 +15,15 @@ public class AnswerDto {
     private UserDto answerer;
     private boolean accepted;
 
+    /**
+     * A constructor for an AnswerDto-object.
+     *
+     * @param id the id of the converted answer-object.
+     * @param text the text of the converted answer-object.
+     * @param date the date of the converted answer-object.
+     * @param answerer the answerer of the converted answer-object.
+     * @param accepted the accepted-flag of the converted answer-object.
+     */
     public AnswerDto(long id, String text, Date date, UserDto answerer, boolean accepted) {
         this.id = id;
         this.text = text;
@@ -22,9 +32,10 @@ public class AnswerDto {
         this.accepted = accepted;
     }
 
-    public AnswerDto() {
-    }
 
+    /*
+     * All setter- and getter-methodes needed to manage all attributes.
+     */
     public long getId() {
         return id;
     }

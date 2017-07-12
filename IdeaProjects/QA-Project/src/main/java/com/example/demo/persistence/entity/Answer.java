@@ -1,13 +1,16 @@
 package com.example.demo.persistence.entity;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * A class for generating the entity answer.
+ * The generated object houses all necessary attributtes of an answer-object
+ * and provides getter- and setter-methodes for this attributes.
+ */
 @Entity
 public class Answer {
 
@@ -30,9 +33,13 @@ public class Answer {
 
     private boolean accepted;
 
-    public Answer() {
-    }
-
+    /**
+     * A constructor for an Answer-object.
+     *
+     * @param text the text of the answer.
+     * @param answerer the answerer of the answer.
+     * @param question the question, which this answer belongs to.
+     */
     public Answer(String text, User answerer, Question question) {
         this.text = text;
         this.date = new Date();
@@ -41,6 +48,17 @@ public class Answer {
         this.accepted = false;
     }
 
+    /**
+     * A standard-constructor for an Answer-object.
+     */
+    public Answer() {
+
+    }
+
+
+    /*
+    * All setter- and getter-methodes needed to manage all attributes.
+    */
     public Long getId() {
         return id;
     }
@@ -73,8 +91,6 @@ public class Answer {
         this.question = question;
     }
 
-
-
     public boolean isAccepted() {
         return accepted;
     }
@@ -90,5 +106,4 @@ public class Answer {
     public User getAnswerer() {
         return answerer;
     }
-
 }
