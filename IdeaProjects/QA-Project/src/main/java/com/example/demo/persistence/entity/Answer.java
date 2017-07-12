@@ -15,6 +15,7 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(length = 2000)
     private String text;
     private Date date;
 
