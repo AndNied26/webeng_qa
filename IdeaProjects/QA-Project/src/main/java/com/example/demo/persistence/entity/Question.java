@@ -2,6 +2,7 @@ package com.example.demo.persistence.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,7 +16,9 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(length = 255)
     private String title;
+    @Column(length = 2000)
     private String text;
     private Date date;
 
