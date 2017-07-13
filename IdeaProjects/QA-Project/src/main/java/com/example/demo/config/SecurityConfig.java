@@ -83,8 +83,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().permitAll().loginProcessingUrl("/index.html")
                 .and()
                 .httpBasic()
+                //.and()
+                //.csrf().ignoringAntMatchers("/addInit")
                 .and()
-                .csrf().disable();
+                //.csrf().disable();
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+
 
 
 
