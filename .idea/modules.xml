@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/pushmi.iml" filepath="$PROJECT_DIR$/.idea/pushmi.iml" />
       <module fileurl="file://$PROJECT_DIR$/IdeaProjects/QA-Project/viertausend.iml" filepath="$PROJECT_DIR$/IdeaProjects/QA-Project/viertausend.iml" />
+      <module fileurl="file://C:\Users\Yiannis\Desktop\testFunkt\pushmi\IdeaProjects\QA-Project\viertausend.iml" filepath="C:\Users\Yiannis\Desktop\testFunkt\pushmi\IdeaProjects\QA-Project\viertausend.iml" />
     </modules>
   </component>
 </project>
