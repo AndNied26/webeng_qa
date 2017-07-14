@@ -86,8 +86,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.and()
                 //.csrf().ignoringAntMatchers("/addInit")
                 .and()
-                //.csrf().disable();
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                .csrf().disable();
+//               .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
 
 

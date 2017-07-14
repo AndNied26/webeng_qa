@@ -3,9 +3,15 @@
     <head>
         <title>Schlechte Frage</title>
         <meta charset="UTF-8">
+        
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://unpkg.com/vue"></script>
+        
+<!--        <sec:csrfMetaTags/>-->
+        
         <link rel="stylesheet" href="styles.css">
     </head>
-    <body>
+    <body v-cloak>
         
         <div id="obereLeiste"
              v-if="seen"
@@ -63,8 +69,6 @@
             <button v-on:click="submitRegistration">Registrieren</button>
         </div>
         
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="https://unpkg.com/vue"></script>
         <script type="text/x-template" id="question">
             <div id="question">
                 <p><b>{{title}}</b></p>
@@ -421,11 +425,21 @@
                     loggedIn : false
                 },
                 
-                created: function() {
+                created: function() { 
+
+                    /*   
+                    
+                    var token = $("meta[name='_csrf']").attr("content");
+                    var header = "X-CSRF-TOKEN";
+                    
+                    $(document).ajaxSend(function(e, xhr, options) {
+                        xhr.setRequestHeader(header, token);
+                    });
+                    
+                    */
                     
                     $.ajax({
                         url:"http://localhost:8080/qa",
-//                        url:"test.json",
                         dataType: 'json',
                         xhrFields: {
                                 withCredentials:true
@@ -434,7 +448,7 @@
                             mainArea.questions = data;
                         },
                         
-                        error: function(){
+                        error: function(x){
                             console.log("error at first GET")
                         }
                     })
