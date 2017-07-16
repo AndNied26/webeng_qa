@@ -7,12 +7,16 @@ Mitglieder:
 -Yiannis Englberger, 77664
 -Michael Ehrlinger, 77474
 
-SetUp-Guide:
+SetUp-Guide Alternative 1: 
+Um die Webanwendung zu starten, laden Sie sich die Dateien 'viertausend-0.0.1-SNAPSHOT.part1' und 'viertausend-0.0.1-SNAPSHOT.part2' aus dem Ordner webeng_qa/IdeaProjects/QA-Project/ herunter.
+Nach dem Entpacken der .rar Dateien erhalten Sie eine .jar Datei 'viertausend-0.0.1-SNAPSHOT' , die sich in der Konsole mit java -jar viertausend-0.0.1-SNAPSHOT.jar starten lässt.
+Daraufhin kann man das Starten des Servers beobachten, das Ende des Startvorgangs erkennt man an der Zeile
+‚Started ViertausendApplication in _.__ seconds (JVM running for _.___)‘.
+
+SetUp-Guide Alternative 2:
 Um die Webanwendung zu starten, laden Sie bitte das Repository herunter und laden Sie es in Intelij IDEA
 (Alternativ kann man hier das Projekt auch über Version Control auschecken).
-
-Zum starten des Servers führen Sie bitte die Klasse ‚ViertausendApplication‘ aus, daraufhin sollte sich die Konsole in Intelij IDEA öffnen 
-und man kann das Starten des Servers beobachten, das Ende des Startvorgangs erkennt man an der 
+Zum starten des Servers führen Sie bitte die Klasse ‚ViertausendApplication‘ aus, daraufhin sollte sich die Konsole in Intelij IDEA öffnen und man kann das Starten des Servers beobachten, das Ende des Startvorgangs erkennt man an der 
 Zeile ‚Started ViertausendApplication in _.__ seconds (JVM running for _.___)‘, nun kann Intelij IDEA gegebenfalls minimiert werden.
 
 Öffnen Sie nun den Browser  Ihrer Wahl, zum Aufruf der Anwendung geben Sie in die Adresszeile ‚localhost:8080/index.html‘ ein, 
