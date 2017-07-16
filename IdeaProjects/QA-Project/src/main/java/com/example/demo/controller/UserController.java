@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.application.dto.UserDto;
 import com.example.demo.application.exception.AccountFoundException;
 import com.example.demo.application.service.UserService;
 import com.example.demo.persistence.entity.User;
@@ -46,7 +47,7 @@ public class UserController {
      * @return a list of user-objects.
      */
     @RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
-    public List<User> getUsers(){return userService.getUsers();}
+    public List<UserDto> getUsers(){return userService.getUsers();}
 
 
     /**
@@ -56,6 +57,6 @@ public class UserController {
      * @return the currently logged in user.
      */
     @RequestMapping(value = "/getMyUser", method = RequestMethod.GET)
-    public User getMyUser() {return userService.getMyUser();}
+    public UserDto getMyUser() {return userService.getMyUser();}
 
 }
