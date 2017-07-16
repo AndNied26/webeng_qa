@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.application.exception.AccountFoundException;
 import com.example.demo.application.service.UserService;
 import com.example.demo.persistence.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class UserController {
      * @param user the given user.
      */
     @RequestMapping(value = "/addUser", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addUser(@RequestBody User user) {
+    public void addUser(@RequestBody User user) throws AccountFoundException {
         userService.addUser(user);
     }
 

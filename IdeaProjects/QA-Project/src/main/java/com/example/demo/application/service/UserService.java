@@ -1,5 +1,6 @@
 package com.example.demo.application.service;
 
+import com.example.demo.application.exception.AccountFoundException;
 import com.example.demo.persistence.entity.Role;
 import com.example.demo.persistence.entity.User;
 import com.example.demo.persistence.repository.RoleRepository;
@@ -42,7 +43,7 @@ public class UserService {
      *
      * @param user the given user.
      */
-    public void addUser(User user) {
+    public void addUser(User user) throws AccountFoundException{
         if(userRepository.findByUsername(user.getUsername()) == null) {
 
             Role role;
@@ -62,6 +63,9 @@ public class UserService {
 
 
             userRepository.save(newUser);
+
+        } else {
+            throw new AccountFoundException();
         }
     }
 

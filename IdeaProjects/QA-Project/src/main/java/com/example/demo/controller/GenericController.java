@@ -33,13 +33,6 @@ public class GenericController {
      */
     @RequestMapping(value = "/addInit")
     public String addInit() {
-        if (!toggledInit) {
-            genericService.addUsers();
-            genericService.addQuestions();
-            toggledInit = true;
-            return "Please refresh QA site!";
-        } else {
-            return "Error! You already added the init data!";
-        }
+        return genericService.addInit();
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 
+
 /**
  * A class containing the methods, which performs the action the user wanted to be done.
  */
@@ -25,6 +26,7 @@ public class GenericService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private boolean toggledInit = false;
 
     /**
      * A constructor, which sets the local repositories to the actual repositories
@@ -46,6 +48,26 @@ public class GenericService {
     }
 
     /**
+     * Adds some users and some questions to the already running application, if possible.
+     * This task can only be performed once!
+     *
+     * @return a String-value, which contains a messege accoring to, if the initialization was successful or not.
+     */
+    public String addInit() {
+        if(!toggledInit) {
+            if(userRepository.findAll().isEmpty()) {
+                addUsers();
+                addQuestions();
+                return "Please refresh QA site!";
+            } else {
+                return "Error! You already added data yourself.";
+            }
+        } else {
+            return "Error! You already added the init data!";
+        }
+    }
+
+    /**
      * Adds some users with their password and their roles to the database.
      */
     public void addUsers() {
@@ -59,14 +81,14 @@ public class GenericService {
 
         User user1 = new User();
         user1.setUsername("Max");
-        user1.setPassword(passwordEncoder.encode("hallo"));
+        user1.setPassword(passwordEncoder.encode("passMax"));
         user1.setRoles(userRoles);
         userRepository.save(user1);
 
 
         User user2 = new User();
         user2.setUsername("Karl");
-        user2.setPassword(passwordEncoder.encode("1234"));
+        user2.setPassword(passwordEncoder.encode("passKarl"));
         user2.setRoles(userRoles);
         userRepository.save(user2);
     }
