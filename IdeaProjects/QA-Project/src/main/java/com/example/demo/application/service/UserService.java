@@ -1,5 +1,6 @@
 package com.example.demo.application.service;
 
+import com.example.demo.application.dto.UserDto;
 import com.example.demo.application.exception.AccountFoundException;
 import com.example.demo.persistence.entity.Role;
 import com.example.demo.persistence.entity.User;
@@ -74,10 +75,15 @@ public class UserService {
      *
      * @return a list of users.
      */
-    public List<User> getUsers() {
+    public List<UserDto> getUsers() {
         List<User> allUsers = new LinkedList<>();
         userRepository.findAll().forEach(allUsers :: add);
-        return allUsers;
+        List<UserDto> dtos = new LinkedList<>();
+        for(User u: allUsers){
+            UserDto dto = convertToDto(u);
+            dtos.add(dto);
+        }
+        return dtos;
     }
 
     /**
@@ -85,10 +91,15 @@ public class UserService {
      *
      * @return the currently logged in user.
      */
-    public User getMyUser() {
+    public UserDto getMyUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         User user = userRepository.findByUsername(name);
-        return user;
+        UserDto dto = convertToDto(user);
+        return dto;
+    }
+    
+    private UserDto convertToDto(User u){
+        return new UserDto(u.getId(), u.getUsername());
     }
 }
