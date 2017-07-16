@@ -9,7 +9,7 @@ Mitglieder:
 
 SetUp-Guide Alternative 1: 
 Um die Webanwendung zu starten, laden Sie sich die Dateien 'viertausend-0.0.1-SNAPSHOT.part1' und 'viertausend-0.0.1-SNAPSHOT.part2' aus dem Ordner webeng_qa/IdeaProjects/QA-Project/ herunter.
-Nach dem Entpacken der .rar Dateien erhalten Sie eine .jar Datei 'viertausend-0.0.1-SNAPSHOT' , die sich in der Konsole mit java -jar viertausend-0.0.1-SNAPSHOT.jar starten lässt.
+Nach dem Entpacken der .rar Dateien erhalten Sie eine .jar Datei 'viertausend-0.0.1-SNAPSHOT' , die sich in der Konsole mit java -jar <Pfad zur Datei>viertausend-0.0.1-SNAPSHOT.jar starten lässt.
 Daraufhin kann man das Starten des Servers beobachten, das Ende des Startvorgangs erkennt man an der Zeile
 ‚Started ViertausendApplication in _.__ seconds (JVM running for _.___)‘.
 
