@@ -42,6 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/qa", "/index.html", "/addUser").permitAll()
                 .and()
+                .authorizeRequests().anyRequest().authenticated()
+                .and()
                 .formLogin().permitAll().loginProcessingUrl("/index.html")
                 .and()
                 .logout().logoutSuccessUrl("/qa")
