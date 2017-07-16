@@ -40,13 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/*").permitAll()
+                .antMatchers("/qa", "/index.html", "/addUser").permitAll()
                 .and()
                 .formLogin().permitAll().loginProcessingUrl("/index.html")
                 .and()
+                .logout().logoutSuccessUrl("/qa")
+                .and()
                 .httpBasic()
                 .and()
-               .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     }
 
     public DaoAuthenticationProvider authProvider() {
