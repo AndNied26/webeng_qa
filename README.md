@@ -23,7 +23,7 @@ oder in einem neuen Tab des bereits geöffneten Fensters ‚localhost:8080/addIn
 ob der Vorgang erfolgreich war oder nicht. Damit die Werte nun auch in der Anwendung angezeigt werden, 
 muss diese aktualisiert werden(die Notwendigkeit zu aktualisieren wird auch in der Meldung erwähnt, sofern das hinzufügen der Daten 
 erfolgreich war). Dieser Initialisierungsvorgang kann nur einmal, direkt nach dem Start ausgeführt werden, 
-wurden bereits eigene Daten eingetragen, können die initialen Daten nicht mehr geladen werden. Bei erfolgreichem hinzufügen der Daten besteht die Möglichkeit sich mit den Nutzern Karl (Passwort: üassKarl) und Max (Passwort: passMax) einloggen.
+wurden bereits eigene Daten eingetragen, können die initialen Daten nicht mehr geladen werden. Bei erfolgreichem hinzufügen der Daten besteht die Möglichkeit sich mit den Nutzern Karl (Passwort: passKarl) und Max (Passwort: passMax) einloggen.
 Die Registrierung eines neuen Users erfolgt über die Schaltfläche ‚Registrieren‘, daraufhin erscheinen ein Eingabefeld 
 für den Benutzernamen und eins für das Passwort sowie die Schaltfläche ‚Registrieren‘. Sollte der gewählte Benutzername 
 bereits vergeben sein, erscheint eine entsprechende Meldung auf dem Bildschirm. Wenn die Registrierung erfolgreich war, 
